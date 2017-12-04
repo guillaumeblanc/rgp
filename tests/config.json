@@ -1,0 +1,7 @@
+{
+	"circuits":["QAT", "ARG", "ITA"],
+	"sessions":["FP1", "Q1", "Q2", "RAC"],
+	"years":[2017],
+	"load_cache":false,
+	"classification_data":"tests/data/classification"
+}
