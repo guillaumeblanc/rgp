@@ -1,7 +1,15 @@
 {
-	"circuits":["QAT", "ARG", "ITA"],
-	"sessions":["FP1", "Q1", "Q2", "RAC"],
-	"years":[2017],
-	"load_cache":false,
-	"classification_data":"tests/data/classification"
+  "scrape" : {
+  	"circuits":["QAT", "ARG", "ITA"],
+  	"sessions":["FP1", "Q1", "Q2", "RAC"],
+  	"years":[2017],
+  	"load_cache":false,
+  	"classification_data":"tests/data/classification"
+  },
+  "keras" : {
+    "train_sessions":["FP1", "FP2", "FP3", "FP4", "WUP", "QP"],
+    "target_sessions":["RAC"],
+  	"years":[2017],
+  	"classification_data":"data/classification"
+  }
 }
