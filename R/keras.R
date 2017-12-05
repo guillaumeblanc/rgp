@@ -30,10 +30,10 @@ train <- function(config) {
   model <- keras_model_sequential() 
   model %>% 
     layer_dense(units = 32, activation = 'relu', input_shape = c(1)) %>% 
-    # layer_dropout(rate = 0.4) %>% 
+    # layer_dropout(rate = 0.4) %>%
     # layer_dense(units = 128, activation = 'relu') %>%
     # layer_dropout(rate = 0.3) %>%
-    layer_dense(units = 25, activation = 'softmax')
+    layer_dense(units = ncol(target_cat), activation = 'softmax')
   
   summary(model)
   
