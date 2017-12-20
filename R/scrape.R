@@ -21,13 +21,22 @@ scrape.classification.results <- function(html, key, config) {
                                 xpath='//*[@id="main_result"]/table[1]'))
   df <- data.frame(table)
   
+  # Renames some column
+  colnames(df)[colnames(df) == 'Pos.'] <- 'Pos'
+  colnames(df)[colnames(df) == 'Num.'] <- 'Num'
+  colnames(df)[colnames(df) == 'Km.h'] <- 'Kmh'
+  
+  # Removes irrelevant lines, aka those with no rider number
+  df$Num <- suppressWarnings(as.integer(df$Num))
+  df <- df[!is.na(df$Num),]
+  
+  # Convert positions to integers, keeps NA for DNF
+  df$Pos <- suppressWarnings(as.integer(df$Pos))
+  
   if(key[[3]] == 'RAC') {
     # Fix up empty points
-    df$Points[df$Points == ''] <- '0' 
-    # Removes 'Not Classified' line
-    df <- df[df$Pos. != 'Not Classified',]
-    # Explicit DNF
-    df$Pos.[df$Pos. == ''] <- 'DNF'
+    df$Points[df$Points == ''] <- '0'
+    df$Points <- suppressWarnings(as.integer(df$Points))
   } else {
     # Renames Gap column
     colnames(df)[colnames(df) == 'Gap.1st.Prev.'] <- 'Gap'
@@ -41,11 +50,8 @@ scrape.classification.results <- function(html, key, config) {
     # Convert minutes to seconds
     tm <- str_match(df$Time, '([0-9]+)\'([0-9]{2}.[0-9]{3})')
     df$Time <- as.numeric(tm[,2]) * 60 + as.numeric(tm [,3])
-    
-    # Fix up missing positions
-    df$Pos. <- 1:length(df$Pos.)
   }
-
+  
   # Creates output filename and writes it.
   filename <- scrape.output_path(key[1], key[2], key[3], 'classification', config)
   print(sprintf('Writing scrapped classification data to "%s"', filename))
@@ -90,13 +96,16 @@ scrape.classification.merge_qp <- function(key, config) {
       return()
     }
     csvs <- lapply(filenames, read.csv)
+    
     # Clean up Q1
     q1 <- csvs[[1]]
-    q1 <- q1[q1$Pos.>2,]  # Removes first 2 positions
-    q1$Pos. <- sapply(q1$Pos., function(x) {x+10})  # Reposition
+    q1 <- q1[-c(1, 2),]  # Removes first 2 positions
     
     # Compose the 2 QP
     df <- rbind(csvs[[2]], q1)
+    
+    # Fix all positions
+    df$Pos <- 1:length(df$Pos)
     
     # Rebuild Gaps
     df$Gap <- sapply(df$Gap, function(x) {x - df$Gap[[1]]})
@@ -144,7 +153,7 @@ scrape.classifications <- function(config) {
   print('Scraping classifications urls')
   apply(urls, 1, function(key) tryCatch(
     scrape_cache(key, config),
-    error = function(e) { if(grepl('xml_missing',e)) { print('No data available.') } else { print(e) }}))
+    error = function(e) { if(grepl('xml_missing',e)) { print('No data available.') } else { stop(e) }}))
   
   # Dumps cache in config$classification_data
   saveRDS(scrape_cache, file = cache_filename)
