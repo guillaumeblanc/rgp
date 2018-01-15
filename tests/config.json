@@ -1,7 +1,9 @@
 {
-	"circuits":["QAT", "ARG", "ITA"],
-	"sessions":["FP1", "Q1", "Q2", "RAC"],
+	"circuits":["QAT", "ARG", "ITA", "FRA"],
+	"sessions":["FP1", "Q1", "Q2", "QP", "RAC"],
 	"years":[2017],
-	"load_cache":false,
-	"classification_data":"tests/data/classification"
+	"download":true,
+	"maxconnects":4,
+	"data_html":"tests/data/html",
+	"data_raw":"tests/data/raw"
 }

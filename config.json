@@ -1,7 +1,9 @@
 {
 	"circuits":["QAT", "ARG", "AME", "SPA", "FRA", "INP", "ITA", "CAT", "NED", "GER", "CZE", "AUT", "GBR", "RSM", "ARA", "JPN", "AUS", "MAL", "VAL"],
-	"sessions":["FP1", "FP2", "FP3", "FP4", "WUP", "Q1", "Q2", "RAC"],
-	"years":[2014, 2015, 2016, 2017],
-	"load_cache":true,
-	"classification_data":"data/classification"
+	"sessions":["FP1", "FP2", "FP3", "FP4", "WUP", "Q1", "Q2", "QP", "RAC"],
+	"years":[2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
+	"download":true,
+	"maxconnects":16,
+	"data_html":"data/html",
+	"data_raw":"data/raw"
 }
