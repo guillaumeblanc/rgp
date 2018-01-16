@@ -119,7 +119,6 @@ fetch <- function(comb, config) {
   
   cluster <- makeCluster(config$maxconnects)
   clusterEvalQ(cluster, library('htmltidy'))
-  registerDoParallel(cluster)
   
   download <- function(url_path, html_path) {
     html <- tidy_html(url(url_path), list(TidyDocType="html5", TidyWrapLen=0))
