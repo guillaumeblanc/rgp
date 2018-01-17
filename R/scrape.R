@@ -4,6 +4,7 @@ library('parallel')
 library('plyr')
 library('dplyr')
 library('stringr')
+library('doParallel')
 
 scrape.url <- function(year, circuit, session, suffix) {
   paste('http://www.motogp.com/en/Results+Statistics', year, circuit, 'MotoGP', session, suffix, sep='/')
