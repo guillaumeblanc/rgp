@@ -14,6 +14,7 @@ scrape.html_path <- function(year, circuit, session, suffix, config) {
 scrape.raw_path <- function(year, circuit, session, suffix, config) {
   file.path(config$data_raw, paste0(paste(year, circuit, session, suffix, sep = '_'), '.csv'))
 }
+library('doParallel')
 
 scrape.time <- function(str) {
   tm <- str_match(str, '(?:([0-9])\')?([0-9]{1,2}.[0-9]{3})')
@@ -119,6 +120,7 @@ fetch <- function(comb, config) {
   
   cluster <- makeCluster(config$maxconnects)
   clusterEvalQ(cluster, library('htmltidy'))
+  registerDoParallel(cluster)
   
   download <- function(url_path, html_path) {
     html <- tidy_html(url(url_path), list(TidyDocType="html5", TidyWrapLen=0))
